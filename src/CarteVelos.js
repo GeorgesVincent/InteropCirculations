@@ -31,9 +31,9 @@ async function getStations() {
 }
 
 //fonction pour récupérer le status des stations avec l'autre url
-function getStatusStations(stationId) {
+async function getStatusStation(stationId) {
     let status = {};
-    fetch(`https://api.cyclocity.fr/contracts/nancy/gbfs/station_status.json`).then(response => response.json()).then(data => {
+    await fetch(`https://api.cyclocity.fr/contracts/nancy/gbfs/station_status.json`).then(response => response.json()).then(data => {
         data.data.stations.forEach(station => {
             if (station.station_id === stationId) {
                 status = station;
@@ -52,7 +52,7 @@ async function afficherStations(){
     //pour chaque station, afficher un marqueur
     stations.forEach(async station => {
         //récupérer le status de la station
-        const status = await getStatusStations(station.station_id);
+        const status = await getStatusStation(station.station_id);
         //créer un marqueur
         const marker = L.marker([station.lat, station.lon]).addTo(map);
         //ajouter un popup au marqueur
